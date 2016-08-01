@@ -4,7 +4,11 @@ var io = require('socket.io')(server);
 
 server.listen(process.env.PORT || 5000);
 
-app.use(express.static(__dirname + '/site'));
+//app.use(express.static(__dirname + '/site'));
+
+app.get('/', function (req, res) {
+  res.send('hello');
+});
 
 io.on('connection', function (socket) {
   socket.emit('news', { hello: 'world' });
