@@ -1,10 +1,20 @@
 {
-  "name": "public",
+  "name": "joinly",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "engines": {
+    "node": "5.9.1"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "express": "4.13.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/timborovkov/joinly"
   },
   "author": "Tim Borovkov",
   "license": "ISC"
