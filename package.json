@@ -7,7 +7,8 @@
     "node": "5.9.1"
   },
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "up": "git add .; git commit -m 'update'; git push;"
   },
   "dependencies": {
     "express": "^4.10.2",
