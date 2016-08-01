@@ -1,18 +1,18 @@
-var express = require('express')();
-var app = express();
-app.set('port', (process.env.PORT || 5000));
-var port = app.get('port');
-var io = require('socket.io')(port);
+var app = require('express')();
+var server = require('http').Server(app);
+var io = require('socket.io')(server);
 
-app.use(express.static(__dirname + '/site'));
+server.listen(process.env.PORT || 5000);
+
+//app.use(express.static(__dirname + '/site'));
+
+app.get('/', function (req, res) {
+  res.sendfile(__dirname + '/index.html');
+});
 
 io.on('connection', function (socket) {
   socket.emit('news', { hello: 'world' });
-  socket.on('disconnect', function () {
-    console.log("user disconnected");
+  socket.on('my other event', function (data) {
+    console.log(data);
   });
-});
-
-app.listen(app.get('port'), function() {
-  console.log('Node app is running on port', app.get('port'));
 });
