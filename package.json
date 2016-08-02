@@ -11,6 +11,7 @@
     "up": "git add .; git commit -m 'update'; git push;"
   },
   "dependencies": {
+    "bootbot": "^1.0.6",
     "express": "^4.10.2",
     "firebase": "^3.2.1",
     "request": "^2.74.0",

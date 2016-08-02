@@ -5,6 +5,13 @@ var server = require('http').Server(app);
 var io = require('socket.io')(server);
 var firebase = require('firebase');
 var request = require('request');
+var BootBot = require('bootbot');
+
+var bot = new BootBot({
+  accessToken: 'EAAG3xPE4ZA6MBACHYhnmub9a6jRmSuXZCBqO4Vahgju6Asm85FXoN0AhuDFaCin5zH0B7se2DRd8vRavNgumhWUShlHPXt6lLv6iGrcBniZA14X9olWsuoyFECOBDu3EDTA8hULUdJya87XteXHJzVXbzBZAcwCquEvqjRZArfAZDZD',
+  verifyToken: 'this_is_epic',
+  appSecret: '9f379ff95611bdd294663247de02d109'
+});
 
 var port = process.env.PORT || 3000;
 server.listen(port);
@@ -130,104 +137,19 @@ io.on('connection', function (socket) {
   })
 });
 
-app.post('/webhook', function (req, res) {
-  var data = req.body;
-  console.log(req);
 
-  data.entry.forEach(function(pageEntry) {
-    var pageID = pageEntry.id;
-    var timeOfEvent = pageEntry.time;
-
-    pageEntry.messaging.forEach(function(messagingEvent) {
-      if (messagingEvent.optin) {
-        receivedAuthentication(messagingEvent);
-      } else if (messagingEvent.message) {
-        receivedMessage(messagingEvent);
-      } else if (messagingEvent.delivery) {
-        receivedDeliveryConfirmation(messagingEvent);
-      } else if (messagingEvent.postback) {
-        receivedPostback(messagingEvent);
-      } else {
-        console.log("Webhook received unknown messagingEvent: ", messagingEvent);
-      }
-    });
-  });
-
-  res.sendStatus(200);
+//Chat bot
+bot.on('message', (payload, chat) => {
+  const text = payload.message.text;
+  chat.say(`Echo: ${text}`);
 });
-function receivedMessage(event) {
-  var senderID = event.sender.id;
-  var recipientID = event.recipient.id;
-  var timeOfMessage = event.timestamp;
-  var message = event.message;
 
-  console.log("Received message for user %d and page %d at %d with message:",
-    senderID, recipientID, timeOfMessage);
-  console.log(JSON.stringify(message));
+bot.hear(['status'], (payload, chat) => {
+    console.log('The user said "hello", "hi", "hey", or "hey there"');
+    chat.say(`This is my reply`);
+});
 
-  var messageId = message.mid;
-
-  // You may get a text or attachment but not both
-  var messageText = message.text;
-  var messageAttachments = message.attachments;
-
-  if (messageText) {
-    switch (messageText) {
-      case 'image':
-        sendImageMessage(senderID);
-        break;
-
-      case 'button':
-        sendButtonMessage(senderID);
-        break;
-
-      case 'generic':
-        sendGenericMessage(senderID);
-        break;
-
-      case 'receipt':
-        sendReceiptMessage(senderID);
-        break;
-
-      default:
-        sendTextMessage(senderID, messageText);
-    }
-  } else if (messageAttachments) {
-    sendTextMessage(senderID, "Message with attachment received");
-  }
-}
-function sendTextMessage(recipientId, messageText) {
-  var messageData = {
-    recipient: {
-      id: recipientId
-    },
-    message: {
-      text: messageText
-    }
-  };
-
-  callSendAPI(messageData);
-}
-function callSendAPI(messageData) {
-  request({
-    uri: 'https://graph.facebook.com/v2.6/me/messages',
-    qs: { access_token: "EAAG3xPE4ZA6MBACHYhnmub9a6jRmSuXZCBqO4Vahgju6Asm85FXoN0AhuDFaCin5zH0B7se2DRd8vRavNgumhWUShlHPXt6lLv6iGrcBniZA14X9olWsuoyFECOBDu3EDTA8hULUdJya87XteXHJzVXbzBZAcwCquEvqjRZArfAZDZD" },
-    method: 'POST',
-    json: messageData
-  }, function (error, response, body) {
-    if (!error && response.statusCode == 200) {
-      var recipientId = body.recipient_id;
-      var messageId = body.message_id;
-
-      console.log("Successfully sent generic message with id %s to recipient %s",
-        messageId, recipientId);
-    } else {
-      console.error("Unable to send message.");
-      console.error(response);
-      console.error(error);
-    }
-  });
-}
+bot.start();
 
 function notify(uid, text){
   //TODO
