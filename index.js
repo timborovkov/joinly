@@ -123,7 +123,7 @@ io.on('connection', function (socket) {
 
 app.get('/webhook', function(req, res){
   if (req.query['hub.mode'] === 'subscribe' &&
-      req.query['hub.verify_token'] === VALIDATION_TOKEN) {
+      req.query['hub.verify_token'] === "EAAG3xPE4ZA6MBAOcmDBfyZB6FowCfLhTg0exrluyABgfD5fIMo5WHLSfLhVtNBQoGYrhoh8bGnpPxUb3ziRY8slZAyD6e2Ul3taZCHwNqlToywjP4RRCZB1pD1iVoXe6hpYPOk0rcnYxWd5jtPrsmNvNaQ3lcw9eKCmLPPqXYDgZDZD") {
     console.log("Validating webhook");
     res.status(200).send(req.query['hub.challenge']);
   } else {
