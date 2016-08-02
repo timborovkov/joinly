@@ -154,7 +154,7 @@ bot.start();
 */
 
 app.get('/webhook', function(req, res){
-  res.status(200);
+  res.send('hello');
 });
 app.post('/webhook', function(req, res){
   var data = req.body;
