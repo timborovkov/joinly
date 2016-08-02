@@ -132,28 +132,28 @@ io.on('connection', function (socket) {
 
 app.post('/webhook', function (req, res) {
   var data = req.body;
-  if (data.object == 'page') {
-    data.entry.forEach(function(pageEntry) {
-      var pageID = pageEntry.id;
-      var timeOfEvent = pageEntry.time;
+  console.log(data);
+  
+  data.entry.forEach(function(pageEntry) {
+    var pageID = pageEntry.id;
+    var timeOfEvent = pageEntry.time;
 
-      pageEntry.messaging.forEach(function(messagingEvent) {
-        if (messagingEvent.optin) {
-          receivedAuthentication(messagingEvent);
-        } else if (messagingEvent.message) {
-          receivedMessage(messagingEvent);
-        } else if (messagingEvent.delivery) {
-          receivedDeliveryConfirmation(messagingEvent);
-        } else if (messagingEvent.postback) {
-          receivedPostback(messagingEvent);
-        } else {
-          console.log("Webhook received unknown messagingEvent: ", messagingEvent);
-        }
-      });
+    pageEntry.messaging.forEach(function(messagingEvent) {
+      if (messagingEvent.optin) {
+        receivedAuthentication(messagingEvent);
+      } else if (messagingEvent.message) {
+        receivedMessage(messagingEvent);
+      } else if (messagingEvent.delivery) {
+        receivedDeliveryConfirmation(messagingEvent);
+      } else if (messagingEvent.postback) {
+        receivedPostback(messagingEvent);
+      } else {
+        console.log("Webhook received unknown messagingEvent: ", messagingEvent);
+      }
     });
+  });
 
-    res.sendStatus(200);
-  }
+  res.sendStatus(200);
 });
 function receivedMessage(event) {
   var senderID = event.sender.id;
@@ -211,7 +211,7 @@ function sendTextMessage(recipientId, messageText) {
 function callSendAPI(messageData) {
   request({
     uri: 'https://graph.facebook.com/v2.6/me/messages',
-    qs: { access_token: "EAAG3xPE4ZA6MBAI0sQWNdS2jpErB0LelEpne1ZCslwIfClmGZCPNsptprrwdV3iSsGCBHvctBxocrs0HfLy8eCsUXMgfThZCZByIC6dgUQPzFlmHFKBJUaVlKkpTaOf7ugoJq5Jyzm8hVBZBkkhSZBrfJQntxS2T4O2DzrIvdKoawZDZD" },
+    qs: { access_token: "EAAG3xPE4ZA6MBACHYhnmub9a6jRmSuXZCBqO4Vahgju6Asm85FXoN0AhuDFaCin5zH0B7se2DRd8vRavNgumhWUShlHPXt6lLv6iGrcBniZA14X9olWsuoyFECOBDu3EDTA8hULUdJya87XteXHJzVXbzBZAcwCquEvqjRZArfAZDZD" },
     method: 'POST',
     json: messageData
   }, function (error, response, body) {
