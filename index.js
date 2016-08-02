@@ -121,8 +121,15 @@ io.on('connection', function (socket) {
   })
 });
 
-app.get('/messangerCallback', function(req, res){
-  res.send('hello');
+app.get('/webhook', function(req, res){
+  if (req.query['hub.mode'] === 'subscribe' &&
+      req.query['hub.verify_token'] === VALIDATION_TOKEN) {
+    console.log("Validating webhook");
+    res.status(200).send(req.query['hub.challenge']);
+  } else {
+    console.error("Failed validation. Make sure the validation tokens match.");
+    res.sendStatus(403);
+  }
 });
 
 app.get('/notify', function(req, res) {
