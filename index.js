@@ -132,8 +132,8 @@ io.on('connection', function (socket) {
 
 app.post('/webhook', function (req, res) {
   var data = req.body;
-  console.log(data);
-  
+  console.log(JSON.stringify(req));
+
   data.entry.forEach(function(pageEntry) {
     var pageID = pageEntry.id;
     var timeOfEvent = pageEntry.time;
