@@ -140,7 +140,7 @@ io.on('connection', function (socket) {
 
 //Chat bot
 bot.on('message', (payload, chat) => {
-  const text = payload.message.text;
+  var text = payload.message.text;
   chat.say(`Echo: ${text}`);
 });
 
