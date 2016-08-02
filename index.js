@@ -8,7 +8,7 @@ var request = require('request');
 var BootBot = require('bootbot');
 
 var bot = new BootBot({
-  accessToken: 'EAAG3xPE4ZA6MBACHYhnmub9a6jRmSuXZCBqO4Vahgju6Asm85FXoN0AhuDFaCin5zH0B7se2DRd8vRavNgumhWUShlHPXt6lLv6iGrcBniZA14X9olWsuoyFECOBDu3EDTA8hULUdJya87XteXHJzVXbzBZAcwCquEvqjRZArfAZDZD',
+  accessToken: 'EAAG3xPE4ZA6MBAJa5gLZBeIY70ZBUFl78YJd5ssLs06femjPUS8WfUS5RAKPwGZC7BKhrYRJbfLFx5cnR7cZAIZCY2rlorDmZBd07ErvUZB2tkkDRR9APJf5lZC0YaNLQI9tIPE17r217U3BsmyVg4xykALEtomeAaJpPFFgcGSdRvQZDZD',
   verifyToken: 'thisIsEpic',
   appSecret: '9f379ff95611bdd294663247de02d109'
 });
@@ -139,6 +139,7 @@ io.on('connection', function (socket) {
 
 
 //Chat bot
+/*
 bot.on('message', (payload, chat) => {
   var text = payload.message.text;
   console.log(text);
@@ -150,6 +151,16 @@ bot.hear(['status'], (payload, chat) => {
 });
 
 bot.start();
+*/
+
+app.get('/webhook', function(req, res){
+  res.status(200);
+});
+app.post('/webhook', function(req, res){
+  var data = req.body;
+  console.log("--------WEBHOOK--------");
+  console.log(data);
+})
 
 function notify(uid, text){
   //TODO
