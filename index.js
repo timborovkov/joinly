@@ -21,14 +21,6 @@ var config = {
 firebase.initializeApp(config);
 var database = firebase.database();
 
-//Sign in to Firebase server user account
-//This account has access to everything in database
-firebase.auth().signInWithEmailAndPassword('server@joinly.org', 'yD4e4SmTWnv7Gjc').catch(function(error) {
-  // Handle Errors here.
-  var errorCode = error.code;
-  var errorMessage = error.message;
-});
-
 io.on('connection', function (socket) {
   console.log('user has been connected');
   socket.on('leave', function(data){
@@ -49,6 +41,26 @@ io.on('connection', function (socket) {
               if(queue[userInQueue] > queue[data.uid]){
                 newQueue[userInQueue] = queue[userInQueue] - 1;
                 //2. Inform user to move 1 place forward
+
+                //Notifications
+                if((queue[userInQueue] -1) == 2){
+                  //If next in queue
+                  //Send notification
+                  notify(userInQueue, "You are next in queue!");
+                }else if((queue[userInQueue] -1) == 1){
+                  //It is your time
+                  //Send notification
+                  notify(userInQueue, "Now it your time!");
+                }else if((queue[userInQueue] -1) == 11){
+                  //There are now 10 people in front of you
+                  //Send notification
+                  notify(userInQueue, "There are now 10 people in front of you in the queue");
+                }else if((queue[userInQueue] -1) == 21){
+                  //There are now 10 people in front of you
+                  //Send notification
+                  notify(userInQueue, "There are now 20 people in front of you in the queue");
+                }
+
                 socket.emit(data.queue, { uid: userInQueue, do: 'moveFroward'});
               }
             }
@@ -90,24 +102,20 @@ io.on('connection', function (socket) {
 
             if((queue[userInQueue] -1) == 2){
               //If next in queue
-              //Get user notification token
-              database.ref('user/'+userInQueue+'/notificationToken').on('value', function(snapshot){
-                var notificationToken = snapshot.val();
-                //Send notification
-                request.post('https://push.ionic.io/api/v1/push', {
-                  form:{
-                    tokens:[
-                      notificationToken
-                    ],
-                    "notification": {
-                      "alert":"You are next in the queue!"
-                    }
-                  }
-                });
-              });
-            }else if(){
+              //Send notification
+              notify(userInQueue, "You are next in queue!");
+            }else if((queue[userInQueue] -1) == 1){
               //It is your time
               //Send notification
+              notify(userInQueue, "Now it your time!");
+            }else if((queue[userInQueue] -1) == 11){
+              //There are now 10 people in front of you
+              //Send notification
+              notify(userInQueue, "There are now 10 people in front of you in the queue");
+            }else if((queue[userInQueue] -1) == 21){
+              //There are now 10 people in front of you
+              //Send notification
+              notify(userInQueue, "There are now 20 people in front of you in the queue");
             }
             socket.emit(data.queue, { uid: userInQueue, do: 'moveFroward'});
           }
@@ -122,7 +130,16 @@ io.on('connection', function (socket) {
   })
 });
 
-/*
+app.get('/setup', function(req, res){
+  //Sign in to Firebase server user account
+  //This account has access to everything in database
+  firebase.auth().signInWithEmailAndPassword('server@joinly.org', 'yD4e4SmTWnv7Gjc').catch(function(error) {
+    // Handle Errors here.
+    var errorCode = error.code;
+    var errorMessage = error.message;
+  });
+});
+
 app.get('/webhook', function(req, res){
   if (req.query['hub.mode'] === 'subscribe' &&
     req.query['hub.verify_token'] === "thisIsEpic") {
@@ -133,6 +150,12 @@ app.get('/webhook', function(req, res){
     res.sendStatus(403);
   }
 });
+
+function notify(uid, text){
+  //TODO
+}
+
+/*
 app.get('/notify', function(req, res) {
   var uid = req.query.uid;
 
