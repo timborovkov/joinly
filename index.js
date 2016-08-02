@@ -6,7 +6,7 @@ var io = require('socket.io')(server);
 var firebase = require('firebase');
 var request = require('request');
 
-server.listen(process.env.PORT || 3000);
+server.listen(process.env.PORT || 9000);
 
 app.use("/", express.static(path.join(__dirname, 'site')));
 
@@ -122,8 +122,7 @@ io.on('connection', function (socket) {
 });
 
 app.get('/webhook', function(req, res){
-  if (req.query['hub.mode'] === 'subscribe' &&
-      req.query['hub.verify_token'] === "EAAG3xPE4ZA6MBAOcmDBfyZB6FowCfLhTg0exrluyABgfD5fIMo5WHLSfLhVtNBQoGYrhoh8bGnpPxUb3ziRY8slZAyD6e2Ul3taZCHwNqlToywjP4RRCZB1pD1iVoXe6hpYPOk0rcnYxWd5jtPrsmNvNaQ3lcw9eKCmLPPqXYDgZDZD") {
+  if (req.query['hub.mode'] === 'subscribe' && req.query['hub.verify_token'] === "helloServer") {
     console.log("Validating webhook");
     res.status(200).send(req.query['hub.challenge']);
   } else {
