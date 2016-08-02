@@ -6,7 +6,9 @@ var io = require('socket.io')(server);
 var firebase = require('firebase');
 var request = require('request');
 
-server.listen(process.env.PORT || 9000);
+var port = process.env.PORT || 3000;
+console.log(port);
+server.listen(port);
 
 app.use("/", express.static(path.join(__dirname, 'site')));
 
