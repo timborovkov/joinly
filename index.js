@@ -7,12 +7,6 @@ var firebase = require('firebase');
 var request = require('request');
 
 var port = process.env.PORT || 3000;
-console.log(port);
-
-app.get('/webhook', function(req, res){
-  res.send(req.query['hub.challenge']);
-});
-
 server.listen(port);
 
 app.use("/", express.static(path.join(__dirname, 'site')));
@@ -129,6 +123,16 @@ io.on('connection', function (socket) {
 });
 
 /*
+app.get('/webhook', function(req, res){
+  if (req.query['hub.mode'] === 'subscribe' &&
+    req.query['hub.verify_token'] === "thisIsEpic") {
+    console.log("Validating webhook");
+    res.status(200).send(req.query['hub.challenge']);
+  } else {
+    console.error("Failed validation. Make sure the validation tokens match.");
+    res.sendStatus(403);
+  }
+});
 app.get('/notify', function(req, res) {
   var uid = req.query.uid;
 
