@@ -132,7 +132,7 @@ io.on('connection', function (socket) {
 
 app.post('/webhook', function (req, res) {
   var data = req.body;
-  console.log(JSON.stringify(req));
+  console.log(req);
 
   data.entry.forEach(function(pageEntry) {
     var pageID = pageEntry.id;
