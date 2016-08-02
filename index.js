@@ -8,6 +8,11 @@ var request = require('request');
 
 var port = process.env.PORT || 3000;
 console.log(port);
+
+app.get('/webhook', function(req, res){
+  res.send(req.query['hub.challenge']);
+});
+
 server.listen(port);
 
 app.use("/", express.static(path.join(__dirname, 'site')));
@@ -123,10 +128,7 @@ io.on('connection', function (socket) {
   })
 });
 
-app.get('/webhook', function(req, res){
-  res.send(req.query['hub.challenge']);
-});
-
+/*
 app.get('/notify', function(req, res) {
   var uid = req.query.uid;
 
@@ -160,3 +162,4 @@ app.get('/notify', function(req, res) {
     });
   });
 });
+*/
