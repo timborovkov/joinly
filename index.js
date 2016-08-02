@@ -139,7 +139,7 @@ io.on('connection', function (socket) {
 
 
 //Chat bot
-/*
+
 bot.on('message', (payload, chat) => {
   var text = payload.message.text;
   console.log(text);
@@ -151,54 +151,7 @@ bot.hear(['status'], (payload, chat) => {
 });
 
 bot.start();
-*/
-
-app.get('/webhook', function(req, res){
-  res.send('hello');
-});
-app.post('/webhook', function(req, res){
-  var data = req.body;
-  console.log("--------WEBHOOK--------");
-  console.log(req);
-  res.sendStatus(200);
-})
 
 function notify(uid, text){
   //TODO
 }
-
-/*
-app.get('/notify', function(req, res) {
-  var uid = req.query.uid;
-
-  database.ref('user/'+uid+'/notificationToken').on('value', function(snapshot){
-    var notificationToken = snapshot.val();
-    //Send notification
-    var reqOptions = {
-      uri: 'https://push.ionic.io/api/v1/push',
-      method: 'post',
-      body: {
-        tokens:[
-          notificationToken
-        ],
-        "notification": {
-          "alert":"You are next in the queue!"
-        }
-      },
-      headers: {
-        "Content-Type": "application/json",
-        "X-Ionic-Application-Id": "345820ce",
-        "Authorization": "".replace("\n", "")
-      }
-    }
-    request(reqOptions, function(error, response, body){
-      if (!error && response.statusCode == 200) {
-        console.log(body);
-      }else{
-        console.log(response);
-        console.error(error);
-      }
-    });
-  });
-});
-*/
