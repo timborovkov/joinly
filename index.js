@@ -9,11 +9,11 @@ var BootBot = require('bootbot');
 
 var bot = new BootBot({
   accessToken: 'EAAG3xPE4ZA6MBACHYhnmub9a6jRmSuXZCBqO4Vahgju6Asm85FXoN0AhuDFaCin5zH0B7se2DRd8vRavNgumhWUShlHPXt6lLv6iGrcBniZA14X9olWsuoyFECOBDu3EDTA8hULUdJya87XteXHJzVXbzBZAcwCquEvqjRZArfAZDZD',
-  verifyToken: 'this_is_epic',
+  verifyToken: 'thisIsEpic',
   appSecret: '9f379ff95611bdd294663247de02d109'
 });
 
-var port = process.env.PORT || 3000;
+var port = process.env.PORT || 8080;
 server.listen(port);
 
 app.use("/", express.static(path.join(__dirname, 'site')));
@@ -141,12 +141,12 @@ io.on('connection', function (socket) {
 //Chat bot
 bot.on('message', (payload, chat) => {
   var text = payload.message.text;
-  chat.say(`Echo: ${text}`);
+  console.log(text);
+  chat.say('This is my reply 1');
 });
 
 bot.hear(['status'], (payload, chat) => {
-    console.log('The user said "hello", "hi", "hey", or "hey there"');
-    chat.say(`This is my reply`);
+    chat.say(`This is my reply 2`);
 });
 
 bot.start();
