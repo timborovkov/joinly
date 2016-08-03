@@ -18,6 +18,10 @@ server.listen(port);
 
 app.use("/", express.static(path.join(__dirname, 'site')));
 
+app.get('/apply', function(req, res) {
+  res.redirect(301, 'https://docs.google.com/forms/d/e/1FAIpQLSc60UXvlEPpw-QmruLwiCTDZDsnKph1eYTh_D9P3TGDSLdbeQ/viewform');
+});
+
 // Initialize Firebase
 var config = {
   apiKey: "AIzaSyB2lOxZibc3G8JyuOU_2ixzRijZaR_7R6s",
@@ -57,11 +61,15 @@ io.on('connection', function (socket) {
                 }else if((queue[userInQueue] -1) == 1){
                   //It is your time
                   //Send notification
-                  notify(userInQueue, "Now it your time!");
-                }else if((queue[userInQueue] -1) == 11){
+                  notify(userInQueue, "Now it is your time!");
+                }else if((queue[userInQueue] -1) == 6){
                   //There are now 10 people in front of you
                   //Send notification
-                  notify(userInQueue, "There are now 10 people in front of you in the queue");
+                  notify(userInQueue, "There are still 5 people in front of you in the queue");
+                }else if((queue[userInQueue] -1) == 11){
+                  //There are now 10 people in front of you (come to buffer line)
+                  //Send notification
+                  notify(userInQueue, "It is time for you to get to the buffer line!");
                 }else if((queue[userInQueue] -1) == 21){
                   //There are now 10 people in front of you
                   //Send notification
@@ -140,6 +148,8 @@ io.on('connection', function (socket) {
 
 //Chat bot
 
+/*
+
 bot.on('message', (payload, chat) => {
   var text = payload.message.text;
   console.log(text);
@@ -151,6 +161,8 @@ bot.hear(['status'], (payload, chat) => {
 });
 
 bot.start();
+
+*/
 
 function notify(uid, text){
   //TODO
