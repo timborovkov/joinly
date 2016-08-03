@@ -5,13 +5,6 @@ var server = require('http').Server(app);
 var io = require('socket.io')(server);
 var firebase = require('firebase');
 var request = require('request');
-var BootBot = require('bootbot');
-
-var bot = new BootBot({
-  accessToken: 'EAAG3xPE4ZA6MBAJa5gLZBeIY70ZBUFl78YJd5ssLs06femjPUS8WfUS5RAKPwGZC7BKhrYRJbfLFx5cnR7cZAIZCY2rlorDmZBd07ErvUZB2tkkDRR9APJf5lZC0YaNLQI9tIPE17r217U3BsmyVg4xykALEtomeAaJpPFFgcGSdRvQZDZD',
-  verifyToken: 'thisIsEpic',
-  appSecret: '9f379ff95611bdd294663247de02d109'
-});
 
 var port = process.env.PORT || 8080;
 server.listen(port);
@@ -75,8 +68,6 @@ io.on('connection', function (socket) {
                   //Send notification
                   notify(userInQueue, "There are now 20 people in front of you in the queue");
                 }
-
-                socket.emit(data.queue, { uid: userInQueue, do: 'moveFroward'});
               }
             }
           }else{
@@ -85,10 +76,6 @@ io.on('connection', function (socket) {
           }
         }
       }
-      console.log("Old queue");
-      console.log(queue);
-      console.log("New queue");
-      console.log(newQueue);
       database.ref('queue/'+data.queue+'/queue').set(newQueue);
     });
   });
@@ -132,23 +119,30 @@ io.on('connection', function (socket) {
               //Send notification
               notify(userInQueue, "There are now 20 people in front of you in the queue");
             }
-            socket.emit(data.queue, { uid: userInQueue, do: 'moveFroward'});
           }
         }
-      }
-      console.log("Old queue");
-      console.log(queue);
-      console.log("New queue");
-      console.log(newQueue);
+      } //--> For loop end
       database.ref('queue/'+data.queue+'/queue').set(newQueue);
     });
-  })
+  });
 });
 
+function notify(uid, text){
+  //TODO
+}
 
-//Chat bot
+
 
 /*
+//Chat bot
+
+var BootBot = require('bootbot');
+
+var bot = new BootBot({
+  accessToken: 'EAAG3xPE4ZA6MBAJa5gLZBeIY70ZBUFl78YJd5ssLs06femjPUS8WfUS5RAKPwGZC7BKhrYRJbfLFx5cnR7cZAIZCY2rlorDmZBd07ErvUZB2tkkDRR9APJf5lZC0YaNLQI9tIPE17r217U3BsmyVg4xykALEtomeAaJpPFFgcGSdRvQZDZD',
+  verifyToken: 'thisIsEpic',
+  appSecret: '9f379ff95611bdd294663247de02d109'
+});
 
 bot.on('message', (payload, chat) => {
   var text = payload.message.text;
@@ -161,9 +155,4 @@ bot.hear(['status'], (payload, chat) => {
 });
 
 bot.start();
-
 */
-
-function notify(uid, text){
-  //TODO
-}
