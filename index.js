@@ -15,6 +15,10 @@ app.get('/apply', function(req, res) {
   res.redirect(301, 'https://docs.google.com/forms/d/e/1FAIpQLSc60UXvlEPpw-QmruLwiCTDZDsnKph1eYTh_D9P3TGDSLdbeQ/viewform');
 });
 
+app.get('/queue', function(req,res) {
+  res.send('This function is coming soon! :)');
+});
+
 // Initialize Firebase
 var config = {
   apiKey: "AIzaSyB2lOxZibc3G8JyuOU_2ixzRijZaR_7R6s",
