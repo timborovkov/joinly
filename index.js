@@ -16,7 +16,7 @@ app.get('/apply', function(req, res) {
 });
 
 app.get('/queue', function(req,res) {
-  res.send('This function is coming soon! :)');
+  res.send('<h1>This function is coming soon! :)</h1>');
 });
 
 // Initialize Firebase
