@@ -83,10 +83,7 @@ io.on('connection', function (socket) {
       database.ref('queue/'+data.queue+'/queue').set(newQueue);
     });
   });
-  socket.on('join', function(data){
-    //Someone wants to join the queue
-    //data = {uid, queue}
-  });
+
   socket.on('nextCustomer', function(data){
     //Queue manager clicked 'Next customer' button
     //data = {queue}
